@@ -2,5 +2,5 @@
 </script>
 
 <template>
-    <h1>Liste des films</h1>
+    <h1 class="text-4xl">Liste des films</h1>
 </template>

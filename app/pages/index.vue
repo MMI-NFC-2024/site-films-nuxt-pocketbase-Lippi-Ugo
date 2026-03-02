@@ -2,5 +2,5 @@
 </script>
 
 <template>
-    <h1>Cinémathèque</h1>
+    <h1 class="text-4xl">Cinémathèque</h1>
 </template>
