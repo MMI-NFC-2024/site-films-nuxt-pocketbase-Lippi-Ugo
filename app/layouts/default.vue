@@ -7,6 +7,7 @@
             <NuxtLink to="/films">
                 Films
             </NuxtLink>
+            <Login />
         </nav>
         <slot />
     </div>
