@@ -4,6 +4,9 @@
             <NuxtLink to="/">
                 Accueil
             </NuxtLink>
+            <NuxtLink to="/personnes">
+                Artistes
+            </NuxtLink>
             <NuxtLink to="/films">
                 Films
             </NuxtLink>

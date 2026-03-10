@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const film = ref({} as FilmResponse);
-const previewUrl = ref<string | null>(null);
 const nuxtApp = useNuxtApp();
 const route = useRoute();
 const id = route.params.id as string;
@@ -8,8 +7,8 @@ if (id) {
     const film_temp = await nuxtApp.$pb.collection("Film").getOne(id);
     film.value = {
         ...film_temp,
-        date_sortie: film_temp.date_sortie ? new Date(film_temp.date_sortie).toISOString().split('T')[0] : "",
-    };
+        date_sortie: film_temp.date_sortie ? new Date(film_temp.date_sortie).toISOString().split('T')[0] : undefined,
+    } as any;
 }
 
 async function envoyerFilm() {
@@ -24,7 +23,7 @@ async function envoyerFilm() {
         useRouter().push({ name: "films-id", params: { id: filmAjouté.id } });
     }
 }
-function createObjectURL(fichier : File) {
+function createObjectURL(fichier: File) {
     return globalThis.URL.createObjectURL(fichier);
 }
 </script>
@@ -37,12 +36,14 @@ function createObjectURL(fichier : File) {
             <div v-if="film.affiche" class="w-48">
                 <ImgPb v-if="typeof film.affiche === 'string'" :record="film" :filename="'affiche'" thumb="400x600"
                     class="w-full h-auto rounded-lg shadow-md" />
-                <img v-else :src="createObjectURL(film.affiche)" alt="Affiche du film" class="w-full h-auto rounded-lg shadow-md" />
-                <button @click.prevent="film.affiche = ''" class="mt-2 text-sm text-red-600 hover:underline">Supprimer
+                <img v-else :src="createObjectURL(film.affiche as any)" alt="Affiche du film"
+                    class="w-full h-auto rounded-lg shadow-md" />
+                <button @click.prevent="film.affiche = undefined as any"
+                    class="mt-2 text-sm text-red-600 hover:underline">Supprimer
                     l'image</button>
             </div>
             <label v-else>Choisir un fichier
-                <input type="file" @change="film.affiche = ($event.target as HTMLInputElement)?.files?.[0]"
+                <input type="file" @change="film.affiche = ($event.target as HTMLInputElement)?.files?.[0] as any"
                     class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-2 file:border-gray-300 file:text-sm file:font-semibold file:bg-gray-50 hover:file:bg-gray-100 transition-colors">
             </label>
             <div class="space-y-2">
@@ -82,7 +83,7 @@ function createObjectURL(fichier : File) {
             <div class="space-y-2">
                 <label class="block text-sm font-semibold text-gray-700">Genres</label>
                 <select multiple v-model="film.genres"
-                    class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white min-h-[120px]">
+                    class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white min-h-30">
                     <option v-for="genres in FilmGenresOptions" :value="genres" class="py-1">{{ genres }}</option>
                 </select>
             </div>
