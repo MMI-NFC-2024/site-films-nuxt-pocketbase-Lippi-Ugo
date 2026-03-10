@@ -74,7 +74,7 @@ const getCountryName = (code: string) => {
 
                 <div v-if="film.expand?.Role_via_film && film.expand.Role_via_film.length" class="mb-4">
                     <h2 class="text-2xl font-semibold mb-2">Acteurs</h2>
-                    <ul class="list-disc list-inside">
+                    <ul>
                         <li v-for="role in film.expand.Role_via_film" :key="role.id">
                             <LinkPersonneSimple :personne="role.expand.acteur" /> - {{ role.nom }}
                         </li>
