@@ -1,8 +1,21 @@
 <script setup lang="ts">
+import Multiselect from '@vueform/multiselect';
+
 const film = ref({} as FilmResponse);
 const nuxtApp = useNuxtApp();
 const route = useRoute();
 const id = route.params.id as string;
+const personnesList = await nuxtApp.$pb
+    .collection("Personne")
+    .getFullList({
+        sort: "nom",
+    });
+
+const personnesOptions = personnesList.map(p => ({
+    ...p,
+    label: `${p.prenom} ${p.nom}`.trim()
+}));
+
 if (id) {
     const film_temp = await nuxtApp.$pb.collection("Film").getOne(id);
     film.value = {
@@ -87,6 +100,21 @@ function createObjectURL(fichier: File) {
                     <option v-for="genres in FilmGenresOptions" :value="genres" class="py-1">{{ genres }}</option>
                 </select>
             </div>
+            <div class="space-y-2">
+                <label class="block text-sm font-semibold text-gray-700">Réalisateur</label>
+                <Multiselect :options="personnesOptions" v-model="film.realisateur" mode="single" label="label"
+                    value-prop="id" />
+            </div>
+            <div class="space-y-2">
+                <label class="block text-sm font-semibold text-gray-700">Scenaristes</label>
+                <Multiselect :options="personnesOptions" v-model="film.scenariste" mode="tags" label="label"
+                    value-prop="id" searchable />
+            </div>
+            <div class="space-y-2">
+                <label class="block text-sm font-semibold text-gray-700">Producteurs</label>
+                <Multiselect :options="personnesOptions" v-model="film.producteur" mode="tags" label="label"
+                    value-prop="id" searchable />
+            </div>
             <div>
                 <button
                     class="mt-6 w-full md:w-auto bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors">
@@ -96,3 +124,5 @@ function createObjectURL(fichier: File) {
         </form>
     </div>
 </template>
+
+<style src="@vueform/multiselect/themes/default.css"></style>

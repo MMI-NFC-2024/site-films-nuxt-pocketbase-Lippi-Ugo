@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.1",
+    "@vueform/multiselect": "^2.6.11",
     "nuxt": "^4.3.1",
     "nuxt-typed-router": "^4.0.7",
     "pocketbase": "^0.26.8",

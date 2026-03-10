@@ -31,7 +31,12 @@ const baseUrl = nuxtApp.$pb.files.getURL(props.record, fileValue, {
   thumb: props.thumb || `${props.width ?? 0}x${props.height ?? 0}`,
 });
 const src = `${baseUrl}?format=webp`;
+const hasImage = !!fileValue;
 </script>
 <template>
-  <img :src="src" :width="width" :height="height" />
+  <img v-if="hasImage" :src="src" :width="width" :height="height" />
+  <div v-else class="flex items-center justify-center bg-gray-200"
+    :style="{ width: width ? `${width}px` : '100%', height: height ? `${height}px` : '200px' }">
+    <span class="text-gray-500">Image non disponible</span>
+  </div>
 </template>
